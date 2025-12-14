@@ -1,0 +1,21 @@
+--- install.sub.orig	2025-12-14 23:12:35
++++ install.sub.menu	2025-12-14 23:14:16
+@@ -2473,7 +2473,17 @@
+ 
+ 	prep_root_mail /tmp/ai/ai.log "$(hostname) $AI_MODE log"
+ 
+-	exec reboot
++	while :; do
++		ask "Exit to (S)hell, (H)alt or (R)eboot?" reboot
++		case $resp in
++		[hH]*)	exec halt;;
++		[rR]*)	exec reboot;;
++		[sS]*)	break;;
++		esac
++	done
++
++	echo "To boot the new system, enter 'reboot' at the command prompt."
++	exit
+ }
+ 
+ pick_keydisk() {

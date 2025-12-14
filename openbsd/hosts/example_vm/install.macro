@@ -1,0 +1,4 @@
+ifconfig vio0 inet autoconf
+sleep 1
+ftp https://raw.githubusercontent.com/nomadium/autoinstall/refs/heads/master/openbsd/hosts/example_vm/install.script
+sh install.script

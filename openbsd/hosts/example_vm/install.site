@@ -1,0 +1,23 @@
+# allow to run command as super user
+echo 'permit nopass :wheel' > /etc/doas.conf
+
+# stop non-needed services
+rcctl disable slaacd
+rcctl disable resolvd
+rcctl disable sndiod
+
+# disable password authentication with ssh
+# XXX: use Include keyword instead
+sed -i 's/^#PasswordAuthentication yes/PasswordAuthentication no/' \
+  /etc/ssh/sshd_config
+sed -i 's/^#KbdInteractiveAuthentication yes/KbdInteractiveAuthentication no/'  /etc/ssh/sshd_config 
+
+# disable unused getty processes
+sed -i '/^ttyC[1235]/ s/on/off/' /etc/ttys
+
+# install essential packages on the first boot
+sed -i '/^fi$/a\
+nohup pkg_add curl rsync-- git mutt-- </dev/null >/dev/null 2>&1 &
+' /etc/rc.firsttime >/dev/null
+
+rm -f /install.site

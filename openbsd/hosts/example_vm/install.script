@@ -1,0 +1,13 @@
+URL=https://raw.githubusercontent.com/nomadium/autoinstall/refs/heads/master/openbsd/hosts/example_vm
+
+for f in install.sub auto_install.conf install.site; do
+    ftp $URL/$f
+done
+
+/autoinstall
+
+mv install.site /mnt
+chmod +x /mnt/install.site
+chroot /mnt /install.site
+
+reboot
