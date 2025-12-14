@@ -1,0 +1,6 @@
+/	256M
+swap	256M
+/var	1.5G
+/usr	4G
+/tmp	256M
+/home	*

@@ -1,0 +1,5 @@
+ifconfig vio0 inet autoconf
+echo nameserver 2620:fe::9 > /etc/resolv.conf
+sleep 1
+ftp https://raw.githubusercontent.com/nomadium/autoinstall/refs/heads/main/openbsd/hosts/hester/install.script
+sh install.script

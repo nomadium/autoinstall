@@ -1,0 +1,29 @@
+PKG_ADD_LOG=/home/miguel/pkg_add.log
+
+# Set up static IPv6 address
+echo "inet6 2a14:3f80:2b7e:1337::2093/64" >> /etc/hostname.vio0
+
+# Allow admin to run command as super user
+echo 'permit nopass :wheel' > /etc/doas.conf
+
+# Stop non-needed services
+rcctl disable dhcpleased
+rcctl disable resolvd
+rcctl disable sndiod
+
+# Disable password authentication with SSH
+SSHD_CONFIG=/etc/ssh/sshd_config
+echo -e "\nInclude sshd_config.d/*"    >> $SSHD_CONFIG
+mkdir                                  "${SSHD_CONFIG}.d"
+echo "PasswordAuthentication no"       >> "${SSHD_CONFIG}.d/nopass.conf"
+echo "KbdInteractiveAuthentication no" >> "${SSHD_CONFIG}.d/nopass.conf"
+
+# Disable unused getty processes
+sed -i '/^ttyC[1235]/ s/on/off/' /etc/ttys
+
+# Install essential packages on the first boot
+sed -i "/^fi$/a\\
+nohup pkg_add curl rsync-- git mutt-- </dev/null >$PKG_ADD_LOG 2>&1 &
+" /etc/rc.firsttime >/dev/null
+
+rm -f /install.site
