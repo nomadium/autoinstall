@@ -1,0 +1,27 @@
+VER=snapshots
+HOST=release
+GITHUB_REPO=nomadium/autoinstall
+
+URL=https://raw.githubusercontent.com/$GITHUB_REPO/refs/heads/release_vm/openbsd
+INSTALLER=installer/$VER/install.sub
+RESPONSE_FILE=hosts/$HOST/auto_install.conf
+POSTINSTALL_SCRIPT=hosts/$HOST/install.site
+DISKLABEL=hosts/$HOST/disklabel
+
+set -e
+
+for f in $INSTALLER     \
+         $RESPONSE_FILE \
+         $DISKLABEL     \
+         $POSTINSTALL_SCRIPT; do
+    ftp $URL/$f
+done
+
+/autoinstall
+
+_postinstall="${POSTINSTALL_SCRIPT##*/}"
+mv          $_postinstall /mnt
+chmod +x    "/mnt/$_postinstall"
+chroot /mnt "/$_postinstall"
+
+reboot
