@@ -1,5 +1,5 @@
 VER=snapshots
-HOST=release
+HOST=release_vm
 GITHUB_REPO=nomadium/autoinstall
 
 URL=https://raw.githubusercontent.com/$GITHUB_REPO/refs/heads/release_vm/openbsd
