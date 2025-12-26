@@ -18,7 +18,7 @@ sed -i '/^ttyC[1235]/ s/on/off/' /etc/ttys
 
 # Install essential packages on the first boot
 sed -i '/^fi$/a\
-doas -u miguel sh -c "echo \"doas pkg_add curl rsync-- git mutt--\" | at now >/dev/null 2>&1"
+doas -u miguel sh -c "echo \\"doas pkg_add curl rsync-- git mutt--\\" | at now >/dev/null 2>&1"
 ' /etc/rc.firsttime >/dev/null
 
 rm -f /install.site
