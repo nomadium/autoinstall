@@ -1,0 +1,26 @@
+# Set up static IPv6 address
+echo "inet6 2001:67c:8fc:189:e3ca:393b:6a70:2360/64" >> /etc/hostname.vio0
+
+# Allow to run command as super user
+echo 'permit keepenv nopass :wheel' > /etc/doas.conf
+
+# Stop non-needed services
+rcctl disable dhcpleased
+rcctl disable sndiod
+
+# Disable password authentication with SSH
+SSHD_CONFIG=/etc/ssh/sshd_config
+echo -e "\nInclude sshd_config.d/*"    >> $SSHD_CONFIG
+mkdir                                  "${SSHD_CONFIG}.d"
+echo "PasswordAuthentication no"       >> "${SSHD_CONFIG}.d/nopass.conf"
+echo "KbdInteractiveAuthentication no" >> "${SSHD_CONFIG}.d/nopass.conf"
+
+# Disable unused getty processes
+sed -i '/^ttyC[1235]/ s/on/off/' /etc/ttys
+
+# Install essential packages on the first boot
+sed -i '/^fi$/a\
+doas -u miguel sh -c "echo \\"doas pkg_add curl rsync-- git mutt--\\" | at now >/dev/null 2>&1"
+' /etc/rc.firsttime >/dev/null
+
+rm -f /install.site

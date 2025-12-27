@@ -1,0 +1,4 @@
+ifconfig vio0 inet6 autoconf
+sleep 1
+ftp https://raw.githubusercontent.com/nomadium/autoinstall/refs/heads/anoncvs/openbsd/hosts/anoncvs/install.script
+sh install.script
