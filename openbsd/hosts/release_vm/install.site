@@ -1,3 +1,5 @@
+ADMIN=miguel
+
 # Allow admin to run command as super user
 echo 'permit keepenv nopass :wheel' > /etc/doas.conf
 
@@ -16,9 +18,12 @@ echo "KbdInteractiveAuthentication no" >> "${SSHD_CONFIG}.d/nopass.conf"
 # Disable unused getty processes
 sed -i '/^ttyC[1235]/ s/on/off/' /etc/ttys
 
+# Configure groups
+user mod -G wsrc $ADMIN
+
 # Install essential packages on the first boot
 sed -i '/^fi$/a\
-doas -u miguel sh -c "echo \\"doas pkg_add curl rsync-- git mutt--\\" | at now >/dev/null 2>&1"
+doas -u $ADMIN sh -c "echo \\"doas pkg_add curl rsync-- git mutt--\\" | at now >/dev/null 2>&1"
 ' /etc/rc.firsttime >/dev/null
 
 rm -f /install.site
