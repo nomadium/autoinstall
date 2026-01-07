@@ -1,0 +1,44 @@
+#DISK=/dev/vdb # IMPORTANT: check block device names first (lsblk) before wipe
+DISK=
+REBOOT=yes
+CONFIG_BASE=https://raw.githubusercontent.com/nomadium/autoinstall/refs/heads/main/nixos/hosts/minimal
+CONFIG=$CONFIG_BASE/configuration.nix
+FLAKE=$CONFIG_BASE/flake.nix
+
+set -e
+
+if [ -z "$DISK" ] || [ ! -e "$DISK" ]; then
+    echo "Disk is not configured or doesn't exist"
+    exit 1
+fi
+
+if [ "$(id -u)" -ne 0 ]; then
+    echo "This script must be run as root" >&2
+    exit 1
+fi
+
+curl -L -O $CONFIG
+curl -L -O $FLAKE
+
+# https://nixos.org/manual/nixos/stable/#sec-installation-manual
+parted $DISK -- mklabel msdos
+parted $DISK -- mkpart primary 1MB -1GB
+parted $DISK -- set 1 boot on
+parted $DISK -- mkpart primary linux-swap -1GB 100%
+
+mkfs.ext4 -L nixos ${DISK}1
+mkswap -L swap ${DISK}2
+
+udevadm settle
+mount /dev/disk/by-label/nixos /mnt
+swapon ${DISK}2
+
+nixos-generate-config --root /mnt --flake
+cp `basename $CONFIG` /mnt/etc/nixos
+cp `basename $FLAKE` /mnt/etc/nixos
+nixos-install --flake '/mnt/etc/nixos#nixos' --no-root-passwd || {
+    echo "Retrying nixos install..."
+    nixos-install --flake '/mnt/etc/nixos#nixos' --no-root-passwd
+}
+
+[ "$REBOOT" = "yes" ] && reboot
