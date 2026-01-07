@@ -1,0 +1,3 @@
+curl -L -O https://raw.githubusercontent.com/nomadium/autoinstall/refs/heads/main/nixos/hosts/minimal2/install.script
+
+sh install.script
