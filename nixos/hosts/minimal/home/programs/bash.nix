@@ -5,6 +5,7 @@
     enable = true;
     shellAliases = {
       xanadu = "echo xanadu";
+      print-sshft = "ssh-keygen -l -f /etc/ssh/ssh_host_ed25519_key.pub";
     };
     initExtra = ''
       sns() {
