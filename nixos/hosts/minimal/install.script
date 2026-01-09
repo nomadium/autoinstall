@@ -1,9 +1,10 @@
 #DISK=/dev/vdb # IMPORTANT: check block device names first (lsblk) before wipe
 DISK=
 REBOOT=yes
-CONFIG_BASE=https://raw.githubusercontent.com/nomadium/autoinstall/refs/heads/main/nixos/hosts/minimal
-CONFIG=$CONFIG_BASE/configuration.nix
-FLAKE=$CONFIG_BASE/flake.nix
+FLAKE_REPO=https://github.com/nomadium/autoinstall
+FLAKE_PATH=autoinstall/nixos/hosts/minimal
+HW_CFG=hardware-configuration.nix
+NIXOS_CONF=/mnt/etc/nixos
 
 set -e
 
@@ -16,9 +17,6 @@ if [ "$(id -u)" -ne 0 ]; then
     echo "This script must be run as root" >&2
     exit 1
 fi
-
-curl -L -O $CONFIG
-curl -L -O $FLAKE
 
 # https://nixos.org/manual/nixos/stable/#sec-installation-manual
 parted $DISK -- mklabel msdos
@@ -33,12 +31,21 @@ udevadm settle
 mount /dev/disk/by-label/nixos /mnt
 swapon ${DISK}2
 
-nixos-generate-config --root /mnt --flake
-cp `basename $CONFIG` /mnt/etc/nixos
-cp `basename $FLAKE` /mnt/etc/nixos
-nixos-install --flake '/mnt/etc/nixos#nixos' --no-root-passwd || {
-    echo "Retrying nixos install..."
-    nixos-install --flake '/mnt/etc/nixos#nixos' --no-root-passwd
-}
+# this is a hack, nixos can install from a flake but as this is an example,
+# hardware-configuration.nix is not maintained in the repo...
+git clone --single-branch --depth 1 $FLAKE_REPO
+nixos-generate-config --root /mnt --show-hardware-config > $FLAKE_PATH/$HW_CFG
+git -C autoinstall add "${FLAKE_PATH#*/}/$HW_CFG"
+nixos-install --root /mnt --flake "./${FLAKE_PATH}#nixos" --no-root-passwd
+
+mkdir -p $NIXOS_CONF
+rsync -avP $FLAKE_PATH/ $NIXOS_CONF
+find $NIXOS_CONF \( -name 'install.*' -o -name 'README.*' \) -delete
+
+git -C $NIXOS_CONF init
+git -C $NIXOS_CONF status
+git -C $NIXOS_CONF add .
+git -C $NIXOS_CONF status
+git -C $NIXOS_CONF -c user.email=root@localhost -c user.name=root commit -m 'Initial commit'
 
 [ "$REBOOT" = "yes" ] && reboot
