@@ -5,6 +5,7 @@ FLAKE_REPO=https://github.com/nomadium/autoinstall
 FLAKE_PATH=autoinstall/nixos/hosts/minimal
 HW_CFG=hardware-configuration.nix
 NIXOS_CONF=/mnt/etc/nixos
+GIT_SETTINGS="-c user.email=root@localhost -c user.name=root"
 
 set -e
 
@@ -33,9 +34,10 @@ swapon ${DISK}2
 
 # this is a hack, nixos can install from a flake but as this is an example,
 # hardware-configuration.nix is not maintained in the repo...
-git clone --single-branch --depth 1 $FLAKE_REPO
+git clone --branch modularize --single-branch --depth 1 $FLAKE_REPO
 nixos-generate-config --root /mnt --show-hardware-config > $FLAKE_PATH/$HW_CFG
 git -C autoinstall add "${FLAKE_PATH#*/}/$HW_CFG"
+git -C autoinstall $GIT_SETTINGS commit -m install
 nixos-install --root /mnt --flake "./${FLAKE_PATH}#nixos" --no-root-passwd
 
 mkdir -p $NIXOS_CONF
@@ -46,6 +48,6 @@ git -C $NIXOS_CONF init
 git -C $NIXOS_CONF status
 git -C $NIXOS_CONF add .
 git -C $NIXOS_CONF status
-git -C $NIXOS_CONF -c user.email=root@localhost -c user.name=root commit -m 'Initial commit'
+git -C $NIXOS_CONF $GIT_SETTINGS commit -m 'Initial commit'
 
 [ "$REBOOT" = "yes" ] && reboot
