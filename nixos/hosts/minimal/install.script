@@ -34,7 +34,7 @@ swapon ${DISK}2
 
 # this is a hack, nixos can install from a flake but as this is an example,
 # hardware-configuration.nix is not maintained in the repo...
-git clone --branch modularize --single-branch --depth 1 $FLAKE_REPO
+git clone --single-branch --depth 1 $FLAKE_REPO
 nixos-generate-config --root /mnt --show-hardware-config > $FLAKE_PATH/$HW_CFG
 git -C autoinstall add "${FLAKE_PATH#*/}/$HW_CFG"
 git -C autoinstall $GIT_SETTINGS commit -m install
