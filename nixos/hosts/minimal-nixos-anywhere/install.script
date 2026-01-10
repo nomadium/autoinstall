@@ -1,0 +1,24 @@
+#TARGET_HOST=nixos@100.64.2.3
+MYFLAKE_REPO=https://github.com/nomadium/nixos-anywhere-examples
+MYFLAKE=".#generic"
+NIXOS_ANYWHERE_FLAKE=github:nix-community/nixos-anywhere
+
+HW_CFG="./hardware-configuration.nix"
+GEN_HW_CFG_ARGS="--generate-hardware-config nixos-generate-config $HW_CFG"
+NIXOS_ANYWHERE_CMD="nix run $NIXOS_ANYWHERE_FLAKE -- $GEN_HW_CFG_ARGS"
+
+set -e
+
+if [ -z "$TARGET_HOST" ]; then
+    echo "A target host is needed in order to install nixos"
+    exit 1
+fi
+
+cd `basename $MYFLAKE_REPO` || {
+   git clone $MYFLAKE_REPO
+   cd `basename $MYFLAKE_REPO`
+}
+
+# https://github.com/nix-community/nixos-anywhere/blob/main/docs/quickstart.md
+nix flake lock
+$NIXOS_ANYWHERE_CMD --flake $MYFLAKE --target-host $TARGET_HOST
