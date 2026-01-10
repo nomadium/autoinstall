@@ -1,5 +1,6 @@
 #TARGET_HOST=nixos@100.64.2.3
-MYFLAKE="github:nomadium/nixos-anywhere-examples?ref=reuse-minimal-flake#generic"
+MYFLAKE_REPO=https://github.com/nomadium/nixos-anywhere-examples
+MYFLAKE=".#generic"
 NIXOS_ANYWHERE_FLAKE=github:nix-community/nixos-anywhere
 
 HW_CFG="./hardware-configuration.nix"
@@ -13,6 +14,10 @@ if [ -z "$TARGET_HOST" ]; then
     exit 1
 fi
 
+cd `basename $MYFLAKE_REPO` || {
+   git clone --branch reuse-minimal-flake $MYFLAKE_REPO
+   cd `basename $MYFLAKE_REPO`
+}
 
 nix flake lock
 $NIXOS_ANYWHERE_CMD --flake $MYFLAKE --target-host $TARGET_HOST
