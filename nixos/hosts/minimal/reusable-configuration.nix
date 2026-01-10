@@ -3,6 +3,7 @@
 {
   imports =
     [
+      ./boot/serial.nix
       ./networking.nix
       ./packages.nix
       ./users
