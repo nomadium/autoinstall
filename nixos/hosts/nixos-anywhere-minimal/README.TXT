@@ -8,6 +8,6 @@ doas vmctl start -c -m 1G -L -i 1 -d latest-nixos-minimal-x86_64-linux.iso -d di
 
 4. From an existing NixOS host run, e.g.:
 
-curl -L -O https://raw.githubusercontent.com/nomadium/autoinstall/refs/heads/main/nixos/hosts/minimal2/install.script
+curl -L -O https://raw.githubusercontent.com/nomadium/autoinstall/refs/heads/minimal-nixos-anywhere/nixos/hosts/nixos-anywhere-minimal/install.script
 
 sh install.script
