@@ -15,7 +15,7 @@ fi
 
 
 cd nixos-anywhere-examples || {
-    git clone $EXAMPLES
+    git clone --branch reuse-minimal-flake $EXAMPLES
     cd nixos-anywhere-examples
 }
 nix flake lock
