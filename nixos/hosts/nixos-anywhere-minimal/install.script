@@ -5,7 +5,7 @@ NIXOS_ANYWHERE_FLAKE=github:nix-community/nixos-anywhere
 
 HW_CFG="./hardware-configuration.nix"
 GEN_HW_CFG_ARGS="--generate-hardware-config nixos-generate-config $HW_CFG"
-NIXOS_ANYWHERE_CMD="nix run $NIXOS_ANYWHERE_FLAKE -- $GEN_HW_CONFIG_ARGS"
+NIXOS_ANYWHERE_CMD="nix run $NIXOS_ANYWHERE_FLAKE -- $GEN_HW_CFG_ARGS"
 
 set -e
 
