@@ -1,5 +1,5 @@
-{ inputs, ... }:
+{ config, lib, pkgs, self, ... }:
 
 {
-  environment.etc."nixos".source = inputs.self;
+  environment.etc."nixos".source = self;
 }
