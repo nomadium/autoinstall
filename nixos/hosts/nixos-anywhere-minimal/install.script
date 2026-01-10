@@ -1,10 +1,10 @@
 #TARGET_HOST=nixos@100.64.2.3
-FLAKE=".#generic"
-EXAMPLES=https://github.com/nomadium/nixos-anywhere-examples
-NIXOS_ANYW_REPO=github:nix-community/nixos-anywhere
+MYFLAKE="github:nomadium/nixos-anywhere-examples?ref=reuse-minimal-flake#generic"
+NIXOS_ANYWHERE_FLAKE=github:nix-community/nixos-anywhere
 
-GEN_HW_CONFIG_ARGS="--generate-hardware-config nixos-generate-config ./hardware-configuration.nix"
-NIXOS_ANYW_CMD="nix run $NIXOS_ANYW_REPO -- $GEN_HW_CONFIG_ARGS"
+HW_CFG="./hardware-configuration.nix"
+GEN_HW_CFG_ARGS="--generate-hardware-config nixos-generate-config $HW_CFG"
+NIXOS_ANYWHERE_CMD="nix run $NIXOS_ANYWHERE_FLAKE -- $GEN_HW_CONFIG_ARGS"
 
 set -e
 
@@ -14,9 +14,5 @@ if [ -z "$TARGET_HOST" ]; then
 fi
 
 
-cd nixos-anywhere-examples || {
-    git clone --branch reuse-minimal-flake $EXAMPLES
-    cd nixos-anywhere-examples
-}
 nix flake lock
-$NIXOS_ANYW_CMD --flake $FLAKE --target-host $TARGET_HOST
+$NIXOS_ANYWHERE_CMD --flake $MYFLAKE --target-host $TARGET_HOST
