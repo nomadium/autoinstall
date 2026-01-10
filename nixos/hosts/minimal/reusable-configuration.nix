@@ -8,5 +8,6 @@
       ./users
       ./services.nix
       ./flakes.nix
+      ./nixos-conf.nix
     ];
 }
