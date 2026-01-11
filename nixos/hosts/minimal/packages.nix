@@ -6,5 +6,6 @@
     git
     bind
     file
+    jq
   ];
 }
