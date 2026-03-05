@@ -1,0 +1,3 @@
+curl -L -O https://raw.githubusercontent.com/nomadium/autoinstall/refs/heads/k8s-workstation/nixos/hosts/k8s-workstation/install.script
+
+sudo sh install.script
