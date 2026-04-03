@@ -1,0 +1,64 @@
+{
+  "ignition": {
+    "version": "3.4.0"
+  },
+  "kernelArguments": {
+    "shouldExist": [
+      "console=ttyS0,115200n8"
+    ]
+  },
+  "passwd": {
+    "users": [
+      {
+        "groups": [
+          "docker"
+        ],
+        "name": "core",
+        "sshAuthorizedKeys": [
+          "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIExampleKey1XYZABCDEFGHIJKLMNOPQRSTUVWX user1@workstation",
+          "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQC7ExampleKey2ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890abcdefghijklmnopqrstuvwxyz user2@laptop"
+        ]
+      }
+    ]
+  },
+  "storage": {
+    "files": [
+      {
+        "path": "/etc/docker/daemon.json",
+        "contents": {
+          "compression": "",
+          "source": "data:;base64,ewogICJpcHY2IjogdHJ1ZSwKICAiZml4ZWQtY2lkci12NiI6ICJmZDQyOmRlYWQ6YmVlZjo6LzY0IiwKICAiaXA2dGFibGVzIjogdHJ1ZQp9Cg=="
+        },
+        "mode": 420
+      },
+      {
+        "path": "/etc/firewalld/zones/public.xml",
+        "contents": {
+          "compression": "",
+          "source": "data:;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4KPHpvbmU+CiAgPHNob3J0PlB1YmxpYzwvc2hvcnQ+CiAgPGRlc2NyaXB0aW9uPk9ubHkgU1NIIGlzIGFsbG93ZWQuPC9kZXNjcmlwdGlvbj4KICA8c2VydmljZSBuYW1lPSJzc2giLz4KPC96b25lPgo="
+        },
+        "mode": 420
+      },
+      {
+        "path": "/etc/NetworkManager/system-connections/ens3-ipv6.nmconnection",
+        "contents": {
+          "compression": "",
+          "source": "data:;base64,W2Nvbm5lY3Rpb25dCmlkPWVuczMtaXB2Ngp0eXBlPWV0aGVybmV0CmludGVyZmFjZS1uYW1lPWVuczMKCltpcHY2XQptZXRob2Q9YXV0bwphZGRyZXNzZXM9MjAwMTpkYjg6OjEvNjQKCltpcHY0XQptZXRob2Q9YXV0bwo="
+        },
+        "mode": 384
+      }
+    ]
+  },
+  "systemd": {
+    "units": [
+      {
+        "mask": true,
+        "name": "zincati.service"
+      },
+      {
+        "enabled": true,
+        "name": "docker.service"
+      }
+    ]
+  }
+}

@@ -1,0 +1,59 @@
+variant: fcos
+version: 1.5.0
+
+passwd:
+  users:
+    - name: core
+      groups:
+        - docker
+      ssh_authorized_keys:
+        - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJ0xPP7mlLUGFuEYzc3CXbtCz++IKKpR4iyLZ/rAdWqi miguel@sarah.local
+        - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBZpbOtSrkPWMkRDM429Q5l/YLmcVz18sPgeau4Q0RNA miguel@nixos
+
+kernel_arguments:
+  should_exist:
+    - console=ttyS0,115200n8
+
+storage:
+  files:
+    - path: /etc/docker/daemon.json
+      mode: 0644
+      contents:
+        inline: |
+          {
+            "ipv6": true,
+            "fixed-cidr-v6": "fd42:dead:beef::/64",
+            "ip6tables": true
+          }
+    - path: /etc/firewalld/zones/public.xml
+      mode: 0644
+      contents:
+        inline: |
+          <?xml version="1.0" encoding="utf-8"?>
+          <zone>
+            <short>Public</short>
+            <description>Only SSH is allowed.</description>
+            <service name="ssh"/>
+          </zone>
+    - path: /etc/NetworkManager/system-connections/ens3-ipv6.nmconnection
+      mode: 0600
+      contents:
+        inline: |
+          [connection]
+          id=ens3-ipv6
+          type=ethernet
+          interface-name=ens3
+
+          [ipv6]
+          method=auto
+          addresses=2a02:898:321:1::eb56/64
+
+          [ipv4]
+          method=auto
+
+systemd:
+  units:
+    - name: zincati.service
+      mask: true
+    - name: docker.service
+      enabled: true
