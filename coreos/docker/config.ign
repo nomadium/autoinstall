@@ -15,8 +15,8 @@
         ],
         "name": "core",
         "sshAuthorizedKeys": [
-          "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIExampleKey1XYZABCDEFGHIJKLMNOPQRSTUVWX user1@workstation",
-          "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQC7ExampleKey2ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890abcdefghijklmnopqrstuvwxyz user2@laptop"
+          "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJ0xPP7mlLUGFuEYzc3CXbtCz++IKKpR4iyLZ/rAdWqi miguel@sarah.local",
+          "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBZpbOtSrkPWMkRDM429Q5l/YLmcVz18sPgeau4Q0RNA miguel@nixos"
         ]
       }
     ]
@@ -40,10 +40,10 @@
         "mode": 420
       },
       {
-        "path": "/etc/NetworkManager/system-connections/ens3-ipv6.nmconnection",
+        "path": "/etc/NetworkManager/system-connections/enp0s3-ipv6.nmconnection",
         "contents": {
-          "compression": "",
-          "source": "data:;base64,W2Nvbm5lY3Rpb25dCmlkPWVuczMtaXB2Ngp0eXBlPWV0aGVybmV0CmludGVyZmFjZS1uYW1lPWVuczMKCltpcHY2XQptZXRob2Q9YXV0bwphZGRyZXNzZXM9MjAwMTpkYjg6OjEvNjQKCltpcHY0XQptZXRob2Q9YXV0bwo="
+          "compression": "gzip",
+          "source": "data:;base64,H4sIAAAAAAAC/1TLQarCMBAG4P3cpbw27Qt1ICcpXYzJL82ik5CMgrcX0Y3779tiUUW0XHSnnAK0jn0ecn14smdFgB1oCqOshnaTiEHlxBcSbW+60wk7Sgpyt0KSUkPv6MHJ6Hi9rDy7iSdmXP/9n18+a/ldrwAAAP//AMV7H4oAAAA="
         },
         "mode": 384
       }
