@@ -35,14 +35,14 @@ storage:
             <description>Only SSH is allowed.</description>
             <service name="ssh"/>
           </zone>
-    - path: /etc/NetworkManager/system-connections/ens3-ipv6.nmconnection
+    - path: /etc/NetworkManager/system-connections/enp0s3-ipv6.nmconnection
       mode: 0600
       contents:
         inline: |
           [connection]
-          id=ens3-ipv6
+          id=enp0s3-ipv6
           type=ethernet
-          interface-name=ens3
+          interface-name=enp0s3
 
           [ipv6]
           method=auto
