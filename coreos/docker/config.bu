@@ -50,6 +50,11 @@ storage:
 
           [ipv4]
           method=auto
+    - path: /etc/ssh/sshd_config.d/10-kex.conf
+      mode: 0644
+      contents:
+        inline: |
+          KexAlgorithms mlkem768x25519-sha256,sntrup761x25519-sha512,curve25519-sha256
 
 systemd:
   units:
